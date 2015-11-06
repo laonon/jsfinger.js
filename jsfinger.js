@@ -1,5 +1,5 @@
 /**
- * jsfinger.js 触屏手势事件，兼容cmd和amd4
+ * jsfinger.js 触屏手势
  * Copyright (c) 2014-2015, laonon
  */
 (function() {
