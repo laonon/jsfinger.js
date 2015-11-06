@@ -1,4 +1,4 @@
 jsfinger.js
 ===========
 
-mini手势库
+mini手势库,支持鼠标
