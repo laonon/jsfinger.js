@@ -1,12 +1,11 @@
 /**
- * jsfinger.js 触屏手势
- * Copyright (c) 2014-2015, laonon
+ * jsfinger.js  迷你手势库
+ * @authors     laonon2012@gmail.com
+ * @date        2014.7
  */
-(function() {
+;(function() {
 
 	"use strict"
-
-	var _self = this;
 
 	if (!document.addEventListener) {
 		return;
@@ -98,41 +97,6 @@
 	};
 
 	/**
-	 * 拓展对象
-	 * @param  {object} target 目标对象
-	 * @param  {object} source 合并源对象
-	 * @return {object} 合并后的新对象
-	 */
-	_util.extend = function() {
-		var params = arguments;
-		var len = params.length;
-		var result = {};
-
-		if (!len) {
-			return;
-		}
-		for (var i = len - 1; i >= 0; i--) {
-			var target = arguments[i];
-			var source = result;
-			for (var property in target) {
-				if (target.hasOwnProperty(property)) {
-					//如果均为对象，则递归
-					if (_isType(target[property], 'Object') && _isType(source[property], 'Object')) {
-						arguments.callee(target[property], source[property]);
-					}
-					//如果source已存在property属性则继续
-					if (source.hasOwnProperty(property)) {
-						continue;
-					} else {
-						source[property] = target[property];
-					}
-				}
-			}
-		}
-		return result;
-	};
-
-	/**
 	 * 触摸事件转化为鼠标事件
 	 * @type {Object}
 	 */
@@ -219,16 +183,15 @@
 		},
 		'swipe': {
 			timer: null,
-			delay: 200,
-			distance: 2000
+			delay: 300,
+			distance: 20
 		}
 	};
 
+	var detal;
 	var touchs = {};
-
-	var startTime = 0;
-
-	var diffTime = 0;
+	var myCount = 0;
+	var holdTime;
 
 	/**
 	 * 重置
@@ -240,8 +203,6 @@
 		gestures['doubletap']['timer'] = null;
 		gestures['hold']['timer'] = null;
 		gestures['swipe']['timer'] = null;
-		startTime = 0;
-		diffTime = 0;
 	}
 
 	/**
@@ -289,13 +250,14 @@
 	function handleStart(e) {
 		e.preventDefault();
 		gestures['touch']['timer'] && clearTimeout(gestures['touch']['timer']);
-		touchs.startTime = new Date();
+		touchs.startTime = new Date().getTime();
+		detal = touchs.startTime - (holdTime || touchs.startTime);
+		touchs.isDoubleTap = false;
 
-		touchs.detal = touchs.startTime - (touchs.holdTime || touchs.startTime);
-
-		if (0 < touchs.detal && touchs.detal <= gestures['doubleTap']['delay']) {
+		if (0 < detal && detal <= gestures['doubleTap']['delay']) {
 			touchs.isDoubleTap = true;
 		}
+
 		//支持触屏
 		if (_util.supportTouch) {
 			var touch = e.touches[0];
@@ -310,8 +272,8 @@
 			touchs.y1 = _util.getMouseXY(e).y;
 		}
 
-		touchs.holdTime = touchs.startTime;
-
+		holdTime = touchs.startTime;
+		
 		bindGesture('hold', {
 			x1: touchs.x1,
 			y1: touchs.y1,
@@ -365,13 +327,13 @@
 			touch = e.target;
 		}
 
-		touchs.endTime = new Date();
-		touchs.diffTime = touchs.endTime - touchs.holdTime;
+		touchs.endTime = new Date().getTime();
+		touchs.diffTime = touchs.endTime - holdTime;
 		touchs.distance = _util.getDistance(touchs.x1, touchs.y1, touchs.x2, touchs.y2);
 		touchs.direction = _util.getDirection(touchs.x1, touchs.y1, touchs.x2, touchs.y2);
 
 		//满足swipe的条件,时差和位移同时满足
-		if (touchs.diffTime < gestures['swipe']['delay'] || touchs.distance < gestures['swipe']['distance']) {
+		if (touchs.diffTime < gestures['swipe']['delay'] && touchs.distance > gestures['swipe']['distance']) {
 			fire(touchs.el, 'swipe', {
 				x1: touchs.x1,
 				y1: touchs.y1,
@@ -404,12 +366,13 @@
 				});
 				touchs = {};
 			} else {
-				bindGesture('singleTap', {
+				fire(touchs.el, 'singleTap', {
 					x1: touchs.x1,
 					y1: touchs.y1,
 					x2: touchs.x2,
 					y2: touchs.y2
 				});
+				touchs = {};
 			}
 		}
 	}
@@ -423,5 +386,4 @@
 		document.documentElement.addEventListener(_util.mobieToPC['touchmove'], handleMove, false);
 		document.documentElement.addEventListener(_util.mobieToPC['touchend'], handleEnd, false);
 	}
-
 })();
