@@ -1,5 +1,4 @@
-##mfinger.js
-===========
+##mfinger.js  
 
 mini手势库,支持鼠标
 
