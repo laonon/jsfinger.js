@@ -159,7 +159,7 @@
 		};
 	};
 
-	var events = ['tap', 'doubleTap', 'hold', 'singleTap', 'swipe', 'swipeLeft', 'swipeRight', 'swipeDown', 'swipeUp', 'drag', 'zoom', 'zoomOut', 'zoomIn'];
+	var events = ['tap', 'doubleTap', 'longTap', 'singleTap', 'swipe', 'swipeLeft', 'swipeRight', 'swipeDown', 'swipeUp', 'drag', 'zoom', 'zoomOut', 'zoomIn'];
 
 	var gestures = {
 		'touch': {
@@ -177,7 +177,7 @@
 			timer: null,
 			delay: 300
 		},
-		'hold': {
+		'longTap': {
 			timer: null,
 			delay: 750
 		},
@@ -201,7 +201,7 @@
 		gestures['touch']['timer'] = null;
 		gestures['tap']['timer'] = null;
 		gestures['doubletap']['timer'] = null;
-		gestures['hold']['timer'] = null;
+		gestures['longTap']['timer'] = null;
 		gestures['swipe']['timer'] = null;
 	}
 
@@ -274,7 +274,7 @@
 
 		holdTime = touchs.startTime;
 		
-		bindGesture('hold', {
+		bindGesture('longTap', {
 			x1: touchs.x1,
 			y1: touchs.y1,
 			x2: touchs.x1,
@@ -288,7 +288,7 @@
 	 */
 	function handleMove(e) {
 		e.preventDefault();
-		cancleGesture('hold');
+		cancleGesture('longTap');
 
 		//支持触屏
 		if (_util.supportTouch) {
@@ -315,7 +315,7 @@
 	 */
 	function handleEnd(e) {
 		e.preventDefault();
-		cancleGesture('hold');
+		cancleGesture('longTap');
 		if (!'holdTime' in touchs) {
 			return;
 		}
