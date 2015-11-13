@@ -249,7 +249,7 @@
 	 */
 	function handleStart(e) {
 		e.preventDefault();
-		gestures['touch']['timer'] && clearTimeout(gestures['touch']['timer']);
+		// gestures['touch']['timer'] && clearTimeout(gestures['touch']['timer']);
 		touchs.startTime = new Date().getTime();
 		detal = touchs.startTime - (holdTime || touchs.startTime);
 		touchs.isDoubleTap = false;

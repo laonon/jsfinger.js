@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-title" content="P2PBUY">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="cleartype" content="on">
+	<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no,minimal-ui">
+	<title>手势demo</title>
+	<style type="text/css">
+	*{padding:0;margin:0;}
+	html,body{height:100%;}
+	.stage{position:absolute;width:100%;top:0;bottom:0;}
+	.tips{height:40px;width:100%;background-color:#eee;color:#333;}
+	</style>
+</head>
+<body>
+	<div class="stage">
+		<div class="tips"></div>
+	</div>
+
+<script type="text/javascript" src="../mfinger.js"></script>
+<script type="text/javascript">
+(function(){
+	document.addEventListener('touchstart', function(event) {
+		event.preventDefault();
+	}, false);
+
+	function _$(selector){
+		if(typeof selector == 'object'){
+			return selector;
+		}else if(typeof selector == 'string'){
+			return document.querySelector(selector);
+		}
+	}
+
+	var stage = _$('.stage');
+	var tip = _$('.tips');
+
+	function tips(text){
+		tip.innerHTML = text;
+	}
+	stage.addEventListener('swipe',function(e){
+		tips('swipeLeft')
+	});
+	stage.addEventListener('swipeLeft',function(e){
+		tips('swipeLeft')
+	});
+	stage.addEventListener('swipeRight',function(e){
+		tips('swipeRight')
+	});
+	stage.addEventListener('swipeUp',function(e){
+		tips('swipeUp')
+	});
+	stage.addEventListener('swipeDown',function(e){
+		tips('swipeDown')
+	});
+	stage.addEventListener('tap',function(e){
+		tips('tap')
+	});
+	stage.addEventListener('doubleTap',function(e){
+		tips('doubletap')
+	});
+	stage.addEventListener('singleTap',function(e){
+		tips('singletap')
+	});
+	stage.addEventListener('drag',function(e){
+		tips('drag')
+	});
+	stage.addEventListener('longTap',function(e){
+		tips('drag')
+	});
+
+	
+	
+	
+})();
+</script>
+</body>
+
+
+</html>
