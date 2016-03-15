@@ -12,3 +12,6 @@ mini手势库,支持鼠标
 目前支持手势tap、longtTap、singleTap、doubleTap、swipe、swipeUp、swipeRight、swipeDown、swipeLeft、drag
 
 	node.addEventListener(eventType,callback);//eventType可以是tap、longtTap、singleTap、doubleTap、swipe、swipeUp、swipeRight、swipeDown、swipeLeft、drag
+	
+	
+##test
